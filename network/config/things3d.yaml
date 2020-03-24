@@ -1,0 +1,14 @@
+validation_steps:
+  2500
+
+checkpoint_steps:
+  5000
+
+dataset:
+  things3d
+
+sub_type:
+  clean
+
+target_shape:
+  [384, 768]

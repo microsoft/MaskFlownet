@@ -1,0 +1,20 @@
+validation_steps:
+  2500
+
+checkpoint_steps:
+  5000
+
+dataset:
+  sintel
+
+kitti:
+  1
+
+hd1k:
+  1
+
+target_shape:
+  [320, 768]
+
+kitti_15:
+  True

@@ -1,0 +1,11 @@
+validation_steps:
+  2500
+
+checkpoint_steps:
+  5000
+
+dataset:
+  kitti
+
+target_shape:
+  [320, 896]
