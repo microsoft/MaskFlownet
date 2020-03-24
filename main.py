@@ -273,7 +273,7 @@ elif dataset_cfg.dataset.value == 'things3d':
 	orig_shape = [540, 960]
 	# %%%% WARNING %%%%
 	# the things3d dataset (subset) is still very large
-	# modify '1024' to proper value depends on your device
+	# modify '1024' to proper value depends on your device (use -1 to load all)
 	samples = samples if samples > 0 else 1024
 
 	# training

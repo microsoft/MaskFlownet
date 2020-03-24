@@ -31,7 +31,7 @@ We follow the common training schedule for optical flow using the following data
 - [KITTI 2012](http://www.cvlibs.net/datasets/kitti/eval_stereo_flow.php?benchmark=flow) & [KITTI 2015](http://www.cvlibs.net/datasets/kitti/eval_scene_flow.php?benchmark=flow)
 - [HD1K](http://hci-benchmark.iwr.uni-heidelberg.de/)
 
-Please modify the paths specified in `main.py` (for FlyingChairs), `reader/things3d.py` (for FlyingThings3D), `reader/sintel.py` (for Sintel), `reader/kitti.py` (for KITTI 2012 & KITTI 2015), and `reader/hd1k.py` (for HD1K) according to where you store the corresponding datasets.
+Please modify the paths specified in `main.py` (for FlyingChairs), `reader/things3d.py` (for FlyingThings3D), `reader/sintel.py` (for Sintel), `reader/kitti.py` (for KITTI 2012 & KITTI 2015), and `reader/hd1k.py` (for HD1K) according to where you store the corresponding datasets. Please be aware that the FlyingThings3D dataset (subset) is still very large, so you might want to load only a relatively small proportion of it (see `main.py`).
 
 ## Training
 
