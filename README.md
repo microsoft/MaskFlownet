@@ -43,7 +43,7 @@ where `CONFIG` specifies the network and training configuration; `DATASET_CONFIG
 
 to test whether your environment has been set up properly, run: `python main.py MaskFlownet.yaml -g 0 --debug`
 
-Here, we present the procedure to train a complete *MaskFlownet* model for validation on Sintel dataset. About 20% sequences (ambush_2, ambush_6, bamboo_2, cave_4, market_6, temple_2) are split as Sintel *val*, while the remaining are left as Sintel *train*. The `CHECKPOINT` in each command line should correspond to the one generated in the previous step.
+Here, we present the procedure to train a complete *MaskFlownet* model for validation on Sintel dataset. About 20% sequences (ambush_2, ambush_6, bamboo_2, cave_4, market_6, temple_2) are split as Sintel *val*, while the remaining are left as Sintel *train* (see `Sintel_train_val_maskflownet.txt`). The `CHECKPOINT` in each command line should correspond to the one generated in the previous step.
 
 | # | Network         | Training         | Validation     | Command Line |
 |---|---|---|---|---|

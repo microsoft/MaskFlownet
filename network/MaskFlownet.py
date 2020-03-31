@@ -408,10 +408,10 @@ class MaskFlownet(nn.HybridBlock):
 				
 
 	def load_head(self, ckpt, ctx):
-		self.MaskFlownetHead.load_parameters(ckpt, ctx)
+		self.MaskFlownet_S.load_parameters(ckpt, ctx)
 
 	def fix_head(self):
-		for _, w in self.MaskFlownetHead.collect_params().items():
+		for _, w in self.MaskFlownet_S.collect_params().items():
 			w.grad_req = 'null'
 
 	def conv(self, _, channels, kernel_size = 3, stride = 1, padding = 1, dilation = 1, activation = True, prefix = None):

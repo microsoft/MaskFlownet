@@ -9,13 +9,16 @@ import hashlib
 import socket
 
 # ======== PLEASE MODIFY ========
-# repo
+# where is the repo
 repoRoot = r'.'
 # to CUDA\vX.Y\bin
-os.environ['PATH'] = r'path\to\your\NVIDIA GPU Computing Toolkit\CUDA\v9.0\bin' + ';' + os.environ['PATH']
+# os.environ['PATH'] = r'path\to\your\NVIDIA GPU Computing Toolkit\CUDA\v9.0\bin' + ';' + os.environ['PATH']
+os.environ['PATH'] = r'\\msra-ts002\c$\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\bin' + ';' + os.environ['PATH']
 # Flying Chairs Dataset
-chairs_path = r'path\to\your\FlyingChairs_release\data'
-chairs_split_file = r'path\to\your\FlyingChairs_release\FlyingChairs_train_val.txt'
+# chairs_path = r'path\to\your\FlyingChairs_release\data'
+# chairs_split_file = r'path\to\your\FlyingChairs_release\FlyingChairs_train_val.txt'
+chairs_path = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\FlyingChairs_release\data'
+chairs_split_file = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\FlyingChairs_release\FlyingChairs_train_val.txt'
 
 import numpy as np
 import mxnet as mx
@@ -33,10 +36,14 @@ parser = argparse.ArgumentParser(parents=[model_parser, training_parser])
 
 parser.add_argument('config', type=str, nargs='?', default=None)
 parser.add_argument('--dataset_cfg', type=str, default='chairs.yaml')
+# proportion of data to be loaded
+# for example, if shard = 4, then one fourth of data is loaded
+# ONLY for things3d dataset (as it is very large)
+parser.add_argument('-s', '--shard', type=int, default=1, help='')
 
 parser.add_argument('-g', '--gpu_device', type=str, default='', help='Specify gpu device(s)')
 parser.add_argument('-c', '--checkpoint', type=str, default=None, 
-	help='model checkpoint to load, by default, the latest model is loaded.'
+	help='model checkpoint to load; by default, the latest one.'
 	'You can use checkpoint:steps to load to a specific steps')
 parser.add_argument('--clear_steps', action='store_true')
 # the choice of network
@@ -107,7 +114,7 @@ if args.checkpoint is not None:
 	sys.stdout.flush()
 # generate id
 if args.checkpoint is None or args.clear_steps:
-	uid = (socket.gethostname() + logger.FileLog._localtime().strftime('%b%d-%H%M') + args.device)
+	uid = (socket.gethostname() + logger.FileLog._localtime().strftime('%b%d-%H%M') + args.gpu_device)
 	tag = hashlib.sha224(uid.encode()).hexdigest()[:3] 
 	run_id = tag + logger.FileLog._localtime().strftime('%b%d-%H%M')
 
@@ -124,13 +131,13 @@ if args.checkpoint is not None:
 	sys.stdout.flush()
 	network_class = getattr(config.network, 'class').get()
 	# if train the head-stack network for the first time
-	if network_class == 'MaskFlownetHS' and args.clear_steps and dataset_cfg.dataset.value == 'chairs':
+	if network_class == 'MaskFlownet' and args.clear_steps and dataset_cfg.dataset.value == 'chairs':
 		print('load head network')
 		pipe.load_head(checkpoint)
 	else:
 		print('load whole network')
 		pipe.load(checkpoint)
-	if network_class == 'MaskFlownetHS':
+	if network_class == 'MaskFlownet':
 		print('fix head')
 		pipe.fix_head()
 	sys.stdout.flush()
@@ -272,21 +279,32 @@ elif dataset_cfg.dataset.value == 'things3d':
 
 	orig_shape = [540, 960]
 	# %%%% WARNING %%%%
-	# the things3d dataset (subset) is still very large
-	# modify '1024' to proper value depends on your device (use -1 to load all)
-	samples = samples if samples > 0 else 1024
+	# the things3d dataset (subset) is very large
+	# therefore, the flow is converted to float16 by default
+	# in float16 format, the complete dataset is about 400 GB
+	# please set proper args.shard according to your device
+	# for example, if args.shard = 4, then one fourth of data is loaded
 
 	# training
 	things3d_dataset = things3d.list_data(sub_type = sub_type)
-	for dataset in things3d_dataset:
-		dataset = dataset[:samples]
-	trainImg1 = [cv2.imread(file) for file in things3d_dataset['image_0']]
-	trainImg2 = [cv2.imread(file) for file in things3d_dataset['image_1']]
-	trainFlow = [flo.load(file) for file in things3d_dataset['flow']]
+	print(len(things3d_dataset['flow']))
+	print(len(things3d_dataset['flow'][:samples:args.shard]))
+	print(things3d_dataset['flow'][0])
+	from pympler.asizeof import asizeof
+	trainImg1 = [cv2.imread(file).astype('uint8') for file in things3d_dataset['image_0'][:samples:args.shard]]
+	print(asizeof(trainImg1[0]))
+	print(asizeof(trainImg1))
+	trainImg2 = [cv2.imread(file).astype('uint8') for file in things3d_dataset['image_1'][:samples:args.shard]]
+	print(asizeof(trainImg2[0]))
+	print(asizeof(trainImg2))
+	trainFlow = [things3d.load(file).astype('float16') for file in things3d_dataset['flow'][:samples:args.shard]]
+	print(asizeof(trainFlow[0]))
+	print(asizeof(trainFlow))
 	trainSize = len(trainFlow)
 	training_datasets = [(trainImg1, trainImg2, trainFlow)] * batch_size
+	print(asizeof(training_datasets))
 
-	# validation- chairs, kitti, sintel
+	# validation- chairs
 	_, validationSet = trainval.read(chairs_split_file)
 	validationSet = validationSet[:samples]
 	validationImg1 = [ppm.load(os.path.join(chairs_path, '%05d_img1.ppm' % i)) for i in validationSet]
@@ -295,11 +313,8 @@ elif dataset_cfg.dataset.value == 'things3d':
 	validationSize = len(validationFlow)
 	validation_datasets['chairs'] = (validationImg1, validationImg2, validationFlow)
 
-	for kitti_version in ('2012', '2015'):
-		dataset = kitti.read_dataset(editions = kitti_version, crop = (370, 1224))
-		validationSize += len(dataset['flow'])
-		validation_datasets['kitti.' + kitti_version] = (dataset['image_0'], dataset['image_1'], dataset['flow'], dataset['occ'])
-	
+	'''
+	# validation- sintel
 	sintel_dataset = sintel.list_data()
 	divs = ('training',) if not getattr(config.network, 'class').get() == 'MaskFlownet' else ('training2',)
 	for div in divs:
@@ -307,6 +322,13 @@ elif dataset_cfg.dataset.value == 'things3d':
 			img1, img2, flow, mask = [[sintel.load(p) for p in data] for data in zip(*dataset)]
 			validationSize += len(flow)
 			validation_datasets['sintel.' + k] = (img1, img2, flow, mask)
+
+	# validation- kitti
+	for kitti_version in ('2012', '2015'):
+		dataset = kitti.read_dataset(editions = kitti_version, crop = (370, 1224))
+		validationSize += len(dataset['flow'])
+		validation_datasets['kitti.' + kitti_version] = (dataset['image_0'], dataset['image_1'], dataset['flow'], dataset['occ'])
+	'''
 
 elif dataset_cfg.dataset.value == 'chairs':
 	batch_size = 8
@@ -324,7 +346,7 @@ elif dataset_cfg.dataset.value == 'chairs':
 	trainSize = len(trainFlow)
 	training_datasets = [(trainImg1, trainImg2, trainFlow)] * batch_size
 
-	# validaion
+	# validaion- chairs
 	validationSet = validationSet[:samples]
 	validationImg1 = [ppm.load(os.path.join(chairs_path, '%05d_img1.ppm' % i)) for i in validationSet]
 	validationImg2 = [ppm.load(os.path.join(chairs_path, '%05d_img2.ppm' % i)) for i in validationSet]
@@ -332,6 +354,7 @@ elif dataset_cfg.dataset.value == 'chairs':
 	validationSize = len(validationFlow)
 	validation_datasets['chairs'] = (validationImg1, validationImg2, validationFlow)
 
+	# validaion- sintel
 	sintel_dataset = sintel.list_data()
 	divs = ('training',) if not getattr(config.network, 'class').get() == 'MaskFlownet' else ('training2',)
 	for div in divs:
@@ -528,8 +551,8 @@ while True:
 			pipe.save(prefix)
 			checkpoints.append(prefix)
 
-			# remove the latest checkpoint
-			if len(checkpoints) > 3:
+			# remove the older checkpoints
+			while len(checkpoints) > 3:
 				prefix = checkpoints[0]
 				checkpoints = checkpoints[1:]
 				remove_queue.put(prefix + '.params')
