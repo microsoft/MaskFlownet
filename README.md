@@ -56,7 +56,7 @@ Here, we present the procedure to train a complete *MaskFlownet* model for valid
 
 ## Pretrained Models
 
-The pretrained models for step 2, 3, and 6 in the procedure above are given (see `./weights`).
+The pretrained models for step 2, 3, and 6 in the procedure above are given (see `./weights/`).
 
 ## Inferring
 

@@ -175,7 +175,6 @@ if args.valid:
 			log.log('steps={}, sintel.{}.{}:epe={}'.format(steps, div, k, val_epe))
 			sys.stdout.flush()
 
-	'''
 	# kitti
 	read_resize = (512, 1152) if infer_resize is None else infer_resize
 	for kitti_version in ('2012', '2015'):
@@ -186,7 +185,6 @@ if args.valid:
 		val_epe = pipe.validate(dataset['image_0'], dataset['image_1'], dataset['flow'], dataset['occ'], batch_size=args.batch, resize = infer_resize, return_type = 'kitti')	
 		log.log('steps={}, kitti.{}:kitti={}'.format(steps, kitti_version, val_epe))
 		sys.stdout.flush()
-	'''
 
 	log.close()
 	sys.exit(0)
