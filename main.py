@@ -132,16 +132,16 @@ if args.checkpoint is not None:
 	network_class = getattr(config.network, 'class').get()
 	# if train the head-stack network for the first time
 	if network_class == 'MaskFlownet' and args.clear_steps and dataset_cfg.dataset.value == 'chairs':
-		print('load head network')
+		print('load the weight for the head network only')
 		pipe.load_head(checkpoint)
 	else:
-		print('load whole network')
+		print('load the weight for the network')
 		pipe.load(checkpoint)
 	if network_class == 'MaskFlownet':
-		print('fix head')
+		print('fix the weight for the head network')
 		pipe.fix_head()
 	sys.stdout.flush()
-	if not args.valid and not args.clear_steps:
+	if not args.valid and not args.predict and not args.clear_steps:
 		pipe.trainer.step(100, ignore_stale_grad=True)
 		pipe.trainer.load_states(checkpoint.replace('params', 'states'))
 
@@ -149,9 +149,9 @@ if args.checkpoint is not None:
 # ======== If to do prediction ========
 
 if args.predict:
-	import valid
+	import predict
 	checkpoint_name = os.path.basename(checkpoint).replace('.params', '')
-	valid.predict(pipe, os.path.join(repoRoot, 'flows', checkpoint_name), batch_size=args.batch, resize = infer_resize)
+	predict.predict(pipe, os.path.join(repoRoot, 'flows', checkpoint_name), batch_size=args.batch, resize = infer_resize)
 	sys.exit(0)
 
 
@@ -175,6 +175,7 @@ if args.valid:
 			log.log('steps={}, sintel.{}.{}:epe={}'.format(steps, div, k, val_epe))
 			sys.stdout.flush()
 
+	'''
 	# kitti
 	read_resize = (512, 1152) if infer_resize is None else infer_resize
 	for kitti_version in ('2012', '2015'):
@@ -185,6 +186,7 @@ if args.valid:
 		val_epe = pipe.validate(dataset['image_0'], dataset['image_1'], dataset['flow'], dataset['occ'], batch_size=args.batch, resize = infer_resize, return_type = 'kitti')	
 		log.log('steps={}, kitti.{}:kitti={}'.format(steps, kitti_version, val_epe))
 		sys.stdout.flush()
+	'''
 
 	log.close()
 	sys.exit(0)

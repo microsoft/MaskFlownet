@@ -54,6 +54,10 @@ Here, we present the procedure to train a complete *MaskFlownet* model for valid
 | 5 | *MaskFlownet*   | Flying Things3D  | Sintel *val* | `python main.py MaskFlownet_ft.yaml --dataset_cfg things3d.yaml -g 0,1,2,3 -c [CHECKPOINT] --clear_steps` |
 | 6 | *MaskFlownet*   | Sintel *train* + KITTI 2015 + HD1K | Sintel *val* | `python main.py MaskFlownet_sintel.yaml --dataset_cfg sintel_kitti2015_hd1k.yaml -g 0,1,2,3 -c [CHECKPOINT] --clear_steps` |
 
+## Pretrained Models
+
+The pretrained models for step 2, 3, and 6 in the procedure above are given (see `./weights`).
+
 ## Inferring
 
 The following script is for inferring:

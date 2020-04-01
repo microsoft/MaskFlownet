@@ -3,10 +3,12 @@ from reader import sintel, kitti
 import cv2
 import numpy as np
 
+# PLEASE MODIFY the paths specified in sintel.py and kitti.py
+
 def predict(pipe, prefix, batch_size = 8, resize = None):
 
 	sintel_resize = (448, 1024) if resize is None else resize
-	sintel_dataset = sintel.list_data(sintel.sintel_path)
+	sintel_dataset = sintel.list_data()
 	prefix = prefix + '_sintel'
 	if not os.path.exists(prefix):
 		os.mkdir(prefix)
@@ -41,7 +43,7 @@ def predict(pipe, prefix, batch_size = 8, resize = None):
 
 	kitti_resize = (512, 1152) if resize is None else resize
 	kitti_dataset = kitti.read_dataset_testing(resize = kitti_resize)
-	prefix = prefix + '_kitti'
+	prefix = prefix.replace('sintel', 'kitti')
 	if not os.path.exists(prefix):
 		os.mkdir(prefix)
 
