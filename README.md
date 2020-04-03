@@ -2,7 +2,7 @@
 
 By Shengyu Zhao, Yilun Sheng, Yue Dong, Eric I-Chao Chang, Yan Xu.
 
-Paper links: [[arXiv]]() [[ResearchGate]]()
+[[arXiv]](https://arxiv.org/pdf/2003.10955.pdf) [[ResearchGate]](https://www.researchgate.net/publication/340115724)
 
 ```
 @inproceedings{zhao2020maskflownet,
@@ -15,11 +15,16 @@ Paper links: [[arXiv]]() [[ResearchGate]]()
 
 ## Introduction
 
-Feature warping is a core technique in optical flow estimation; however, the ambiguity caused by occluded areas during warping is a major problem that remains unsolved. We propose an asymmetric occlusion-aware feature matching module, which can learn a rough occlusion mask that filters useless (occluded) areas immediately after feature warping without any explicit supervision. The proposed module can be easily integrated into end-to-end network architectures and enjoys performance gains while introducing negligible computational cost. The learned occlusion mask can be further fed into a subsequent network cascade with dual feature pyramids with which we achieve state-of-the-art performance. For more details, please refer to our [paper]().
-
 ![mask_visualization](./images/mask_visualization-image.jpg)
 
-This repository includes training and inferring scripts using Python and MXNet. Code has been tested with Python 3.6 and MXNet 1.5.
+Feature warping is a core technique in optical flow estimation; however, the ambiguity caused by occluded areas during warping is a major problem that remains unsolved. We propose an asymmetric occlusion-aware feature matching module, which can learn a rough occlusion mask that filters useless (occluded) areas immediately after feature warping without any explicit supervision. The proposed module can be easily integrated into end-to-end network architectures and enjoys performance gains while introducing negligible computational cost. The learned occlusion mask can be further fed into a subsequent network cascade with dual feature pyramids with which we achieve state-of-the-art performance. For more details, please refer to our [paper]().
+
+This repository includes:
+
+- Training and inferring scripts using Python and MXNet.
+- Pretrained models of *MaskFlownet-S* and *MaskFlownet*.
+
+Code has been tested with Python 3.6 and MXNet 1.5.
 
 ## Datasets
 
@@ -39,11 +44,9 @@ The following script is for training:
 
 `python main.py CONFIG [-dataset_cfg DATASET_CONFIG] [-g GPU_DEVICES] [-c CHECKPOINT, --clear_steps] [--debug]`
 
-where `CONFIG` specifies the network and training configuration; `DATASET_CONFIG` specifies the dataset configuration (default to `chairs.yaml`); `GPU_DEVICES` specifies the GPU IDs to use (default to cpu only), split by commas with multi-GPU support. Please make sure that the number of GPUs evenly divides the `BATCH_SIZE`, which depends on the `DATASET_CONFIG` (`BATCH_SIZE` are `8` or `4` in the given configurations, so `4`, `2`, or `1` GPU(s) will be fine); `CHECKPOINT` specifies the previous checkpoint to start with; use `--clear_steps` to clear the step history and start from step 0; use `--debug` to enter the DEBUG mode, where only a small fragment of the data is read.
+where `CONFIG` specifies the network and training configuration; `DATASET_CONFIG` specifies the dataset configuration (default to `chairs.yaml`); `GPU_DEVICES` specifies the GPU IDs to use (default to cpu only), split by commas with multi-GPU support. Please make sure that the number of GPUs evenly divides the `BATCH_SIZE`, which depends on `DATASET_CONFIG` (`BATCH_SIZE` are `8` or `4` in the given configurations, so `4`, `2`, or `1` GPU(s) will be fine); `CHECKPOINT` specifies the previous checkpoint to start with; use `--clear_steps` to clear the step history and start from step 0; use `--debug` to enter the DEBUG mode, where only a small fragment of the data is read. To test whether your environment has been set up properly, run: `python main.py MaskFlownet.yaml -g 0 --debug`.
 
-to test whether your environment has been set up properly, run: `python main.py MaskFlownet.yaml -g 0 --debug`
-
-Here, we present the procedure to train a complete *MaskFlownet* model for validation on Sintel dataset. About 20% sequences (ambush_2, ambush_6, bamboo_2, cave_4, market_6, temple_2) are split as Sintel *val*, while the remaining are left as Sintel *train* (see `Sintel_train_val_maskflownet.txt`). The `CHECKPOINT` in each command line should correspond to the one generated in the previous step.
+Here, we present the procedure to train a complete *MaskFlownet* model for validation on the Sintel dataset. About 20% sequences (ambush_2, ambush_6, bamboo_2, cave_4, market_6, temple_2) are split as Sintel *val*, while the remaining are left as Sintel *train* (see `Sintel_train_val_maskflownet.txt`). `CHECKPOINT` in each command line should correspond to the name of the checkpoint generated in the previous step.
 
 <center>
 
@@ -60,7 +63,7 @@ Here, we present the procedure to train a complete *MaskFlownet* model for valid
 
 ## Pretrained Models
 
-The pretrained models for step 2, 3, and 6 in the procedure above are given (see `./weights/`).
+Pretrained models for step 2, 3, and 6 in the above procedure are given (see `./weights/`).
 
 ## Inferring
 
