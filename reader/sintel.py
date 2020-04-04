@@ -6,11 +6,8 @@ import struct
 import numpy as np
 
 # ======== PLEASE MODIFY ========
-# sintel_root = r'path\to\your\Sintel'
-# split_file = r'path\to\your\Sintel\Sintel_train_val.txt'
-sintel_root = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\Sintel'
-# split_file = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\Sintel\Sintel_train_val.txt'
-split_file = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\Sintel\Sintel_train_val_syl.txt'
+sintel_root = r'path\to\your\Sintel'
+split_file = r'path\to\your\Sintel\Sintel_train_val.txt' # r'path\to\your\Sintel\Sintel_train_val_maskflownet.txt'
 
 def list_data(path = None):
 	if path is None:

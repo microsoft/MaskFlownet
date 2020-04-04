@@ -12,13 +12,10 @@ import socket
 # where is the repo
 repoRoot = r'.'
 # to CUDA\vX.Y\bin
-# os.environ['PATH'] = r'path\to\your\NVIDIA GPU Computing Toolkit\CUDA\v9.0\bin' + ';' + os.environ['PATH']
-os.environ['PATH'] = r'\\msra-ts002\c$\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\bin' + ';' + os.environ['PATH']
+os.environ['PATH'] = r'path\to\your\NVIDIA GPU Computing Toolkit\CUDA\v9.0\bin' + ';' + os.environ['PATH']
 # Flying Chairs Dataset
-# chairs_path = r'path\to\your\FlyingChairs_release\data'
-# chairs_split_file = r'path\to\your\FlyingChairs_release\FlyingChairs_train_val.txt'
-chairs_path = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\FlyingChairs_release\data'
-chairs_split_file = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\FlyingChairs_release\FlyingChairs_train_val.txt'
+chairs_path = r'path\to\your\FlyingChairs_release\data'
+chairs_split_file = r'path\to\your\FlyingChairs_release\FlyingChairs_train_val.txt'
 
 import numpy as np
 import mxnet as mx

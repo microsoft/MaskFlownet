@@ -7,8 +7,7 @@ VALIDATE_INDICES['2012'] = [0, 12, 15, 16, 17, 18, 24, 30, 38, 39, 42, 50, 54, 5
 VALIDATE_INDICES['2015'] = [10, 11, 12, 25, 26, 30, 31, 40, 41, 42, 46, 52, 53, 72, 73, 74, 75, 76, 80, 81, 85, 86, 95, 96, 97, 98, 104, 116, 117, 120, 121, 126, 127, 153, 172, 175, 183, 184, 190, 199]
 
 # ======== PLEASE MODIFY ========
-# kitti_root = r'path\to\your\KITTI'
-kitti_root = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\KITTI'
+kitti_root = r'path\to\your\KITTI'
 
 kitti_2012_image = os.path.join(kitti_root, r'2012\training\colored_0')
 kitti_2012_flow_occ = os.path.join(kitti_root, r'2012\training\flow_occ')

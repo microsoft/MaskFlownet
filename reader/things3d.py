@@ -4,8 +4,7 @@ from functools import lru_cache
 import struct
 
 # ======== PLEASE MODIFY ========
-# things3d_root = r'path\to\your\FlyingThings3D_subset'
-things3d_root = r'\\msralab\ProjectData\ehealth03\data\FlyingThings3D_subset\FlyingThings3D_subset'
+things3d_root = r'path\to\your\FlyingThings3D_subset'
 
 def list_data(path = None, sub_type = 'clean'):
 	if path is None:

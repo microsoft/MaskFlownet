@@ -5,8 +5,7 @@ import numpy as np
 VALIDATE_INDICES = [5]
 
 # ======== PLEASE MODIFY ========
-# hd1k_root = r'path\to\your\HD1K'
-hd1k_root = r'\\msralab\ProjectData\ehealth02\v-dinliu\Flow2D\Data\HD1K'
+hd1k_root = r'path\to\your\HD1K'
 
 hd1k_image = os.path.join(hd1k_root, r'hd1k_input\image_2')
 hd1k_flow_occ = os.path.join(hd1k_root, r'hd1k_flow_gt\flow_occ')
