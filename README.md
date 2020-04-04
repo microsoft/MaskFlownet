@@ -21,7 +21,7 @@ Feature warping is a core technique in optical flow estimation; however, the amb
 
 This repository includes:
 
-- Training and inferring scripts using Python and MXNet.
+- Training and inferring scripts using Python and MXNet; and
 - Pretrained models of *MaskFlownet-S* and *MaskFlownet*.
 
 Code has been tested with Python 3.6 and MXNet 1.5.
