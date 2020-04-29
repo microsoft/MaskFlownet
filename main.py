@@ -162,7 +162,7 @@ def validate():
 
 if args.valid:
 	log = logger.FileLog(os.path.join(repoRoot, 'logs', 'val', '{}.val.log'.format(run_id)), screen=True)
-	'''
+	
 	# sintel
 	sintel_dataset = sintel.list_data()
 	for div in ('training2', 'training'):
@@ -171,11 +171,11 @@ if args.valid:
 			val_epe = pipe.validate(img1, img2, flow, mask, batch_size=args.batch, resize = infer_resize)
 			log.log('steps={}, sintel.{}.{}:epe={}'.format(steps, div, k, val_epe))
 			sys.stdout.flush()
-	'''
+	
 	# kitti
 	read_resize = (370, 1224) # if infer_resize is None else infer_resize
 	for kitti_version in ('2012', '2015'):
-		dataset = kitti.read_dataset(editions = kitti_version, parts = 'valid', resize = read_resize)
+		dataset = kitti.read_dataset(editions = kitti_version, parts = 'mixed', resize = read_resize)
 		val_epe = pipe.validate(dataset['image_0'], dataset['image_1'], dataset['flow'], dataset['occ'], batch_size=args.batch, resize = infer_resize, return_type = 'epe')	
 		log.log('steps={}, kitti.{}:epe={}'.format(steps, kitti_version, val_epe))
 		sys.stdout.flush()
