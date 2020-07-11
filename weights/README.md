@@ -14,7 +14,7 @@ Here, we provide three pre-trained models,
 
 | Network | Checkpoint | Sintel *train* + *val* | Sintel *val* | KITTI 2012 | KITTI 2015 |
 |---|---|---|---|---|---|
-| *MaskFlownet-S* | `771Sep25-0735_500000`  | 2.47, 3.86 | 3.10, 5.54 | 4.09, 0.18 | 10.68, 0.27 |
+| *MaskFlownet-S* | `abbSep15-1037_500000`  | 2.33, 3.72 | 2.93, 5.35 | 4.69, 0.20 | 11.88, 0.29 |
 | *MaskFlownet-S* | `dbbSep30-1206_1000000` | - | 2.70, 4.07 | 3.25, 0.11 | 9.14, 0.18 |
 | *MaskFlownet*   | `5adNov03-0005_1000000` | - | 2.52, 3.83 | 2.85, 0.10 | 8.15, 0.17 |
 
