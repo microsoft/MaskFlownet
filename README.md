@@ -79,6 +79,14 @@ For example,
 
 - to do prediction for *MaskFlownet* on checkpoint `000Mar17`, run `python main.py MaskFlownet.yaml -g 0 -c 000Mar17 --predict` (the output will be under `./flows/`).
 
+## Inferrence on New Data
+
+For those who do not wish to train the model and would purely like to obtain flow images from a pretrained model on their own data, please use predict_new_data.py. The functions provide a means to load a model and perform inference on a given pair of images or to obtain a series of flow images corresponding to the movement between component images of a given video. This can be called from another script or you can call the program from a terminal/Anaconda prompt like so:
+
+- to obtain a video composed of the flow images corresponding to `input_video.mp4`, run `python predict_new_data.py C:/Users/my_username/flow_video_filepath.mp4 MaskFlownet.yaml --video_filepath C:/Users/my_username/input_video.mp4 -g 0 -c 8caNov12`
+
+- to obtain a flow image from 2 input images `image_1.png` and `image_2.png`, run `python predict_new_data.py C:/Users/my_username/flow_image_filepath.png MaskFlownet.yaml --image_1 C:/Users/my_username/image_1.png --image_2 C:/Users/my_username/image_2.png -g 0 -c 8caNov12`
+
 ## Acknowledgement
 
 We thank Tingfung Lau for the initial implementation of the FlyingChairs pipeline.
