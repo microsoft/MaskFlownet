@@ -81,7 +81,7 @@ For example,
 
 ## Inferrence on New Data
 
-For those who do not wish to train the model and would purely like to obtain flow images from a pretrained model on their own data, please use predict_new_data.py. You do not need to download any of the optical flow datasets to use predict_new_data.py, although you will have to additionally need to pip install pyflow and moviepy. The functions provide a means to load a model and perform inference on a given pair of images or to obtain a series of flow images corresponding to the movement between component images of a given video without the need to download optical flow datasets. These can be called from another script or you can call the program from a terminal/Anaconda prompt like so:
+For those who do not wish to train the model and would purely like to obtain flow images from a pretrained model on their own data, please use predict_new_data.py. You do not need to download any of the optical flow datasets to use predict_new_data.py, although you will have to additionally pip install flow_vis and moviepy. The functions provide a means to load a model and perform inference on a given pair of images or to obtain a series of flow images corresponding to the movement between component images of a given video without the need to download optical flow datasets. These can be called from another script or you can call the program from a terminal/Anaconda prompt like so:
 
 - to obtain a video composed of the flow images corresponding to `input_video.mp4`, run `python predict_new_data.py C:/Users/my_username/flow_video_filepath.mp4 MaskFlownet.yaml --video_filepath C:/Users/my_username/input_video.mp4 -g 0 -c 8caNov12`
 
