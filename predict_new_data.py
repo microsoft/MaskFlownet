@@ -113,9 +113,10 @@ def predict_video_flow(video_filename, batch_size, resize=None):
         new_frames.append(frame)
         prev_frames.append(frame)
     del prev_frames[-1] #delete the last frame of the video from prev_frames
-    flow_video = [flow_vis.flow_to_color(flow, convert_to_bgr=False) for flow, occ_mask, warped in pipe.predict(prev_frames, new_frames, batch_size=batch_size, resize=resize)]
+    flow_video = [flow for flow, occ_mask, warped in pipe.predict(prev_frames, new_frames, batch_size=batch_size, resize=resize)]
     
     return flow_video, fps
+
 
 
 if __name__ == "__main__":
@@ -144,7 +145,7 @@ if __name__ == "__main__":
     
     checkpoint, steps = find_checkpoint(args.checkpoint)
     config = load_model(args.config)
-    pipe = instantiate_model(args.gpu_device, config)#, checkpoint)
+    pipe = instantiate_model(args.gpu_device, config)
     pipe = load_checkpoint(pipe, config, checkpoint)
     
     if args.image_1 is not None:
@@ -154,7 +155,8 @@ if __name__ == "__main__":
         cv2.imwrite(args.flow_filepath, flow_vis.flow_to_color(flow, convert_to_bgr=False))
     else:
         flow_video, fps = predict_video_flow(args.video_filepath, batch_size=args.batch)
-        flow_video_clip = create_video_clip_from_frames(flow_video, fps)
+        flow_video_visualisations = [flow_vis.flow_to_color(flow, convert_to_bgr=False) for flow in flow_video]
+        flow_video_clip = create_video_clip_from_frames(flow_video_visualisations, fps)
         flow_video_clip.write_videofile(args.flow_filepath, threads=args.threads, logger=None) #export the video
 
     sys.exit(0)
