@@ -160,24 +160,3 @@ if __name__ == "__main__":
         flow_video_clip.write_videofile(args.flow_filepath, threads=args.threads, logger=None) #export the video
 
     sys.exit(0)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
