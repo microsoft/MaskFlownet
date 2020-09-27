@@ -23,7 +23,7 @@ def read_dataset(path = None, parts = 'mixed', resize = None, samples = -1, norm
 	dataset['occ'] = []
 	path_images = path['image']
 	path_flows = path['flow_occ']
-	list_files = os.listdir(path_flows)
+	list_files = sorted(os.listdir(path_flows))
 	num_files = len(list_files) - 1
 	ind_valids = VALIDATE_INDICES
 	num_valids = len(ind_valids)
