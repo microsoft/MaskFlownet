@@ -41,7 +41,7 @@ def read_dataset(path = None, editions = 'mixed', parts = 'mixed', crop = None, 
 		num_files = len(os.listdir(path_flows)) - 1
 		ind_valids = VALIDATE_INDICES[edition]
 		num_valids = len(ind_valids)
-		if samples is not None:
+		if samples is not -1:
 			num_files = min(num_files, samples)
 		ind = 0
 		for k in range(num_files):
@@ -96,7 +96,7 @@ def read_dataset_testing(path = None, editions = 'mixed', resize = None, samples
 	for edition in editions:
 		path_testing = path[edition + 'testing']
 		num_files = (len(os.listdir(path_testing)) - 1) // 2
-		if samples is not None:
+		if samples is not -1:
 			num_files = min(num_files, samples)
 		for k in range(num_files):
 			img0 = cv2.imread(os.path.join(path_testing, '%06d_10.png' % k))

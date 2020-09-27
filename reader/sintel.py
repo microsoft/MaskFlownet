@@ -26,7 +26,7 @@ def list_data(path = None):
 				c = 0
 				dataset[part + str(1)][subset] = []
 				dataset[part + str(2)][subset] = []
-			for seq in os.listdir(os.path.join(path, part, subset)):
+			for seq in sorted(os.listdir(os.path.join(path, part, subset))):
 				frames = os.listdir(os.path.join(path, part, subset, seq))
 				frames = list(sorted(map(lambda s: int(pattern.match(s).group(1)),
 									 filter(lambda s: pattern.match(s), frames))))
