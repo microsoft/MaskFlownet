@@ -21,8 +21,8 @@ kitti_path['2015' + 'flow_occ'] = kitti_2015_flow_occ
 
 kitti_path['2012' + 'testing'] = os.path.join(kitti_root, r'2012\testing\colored_0')
 kitti_path['2015' + 'testing'] = os.path.join(kitti_root, r'2015\testing\image_2')
-kitti_path['2012' + 'testing'] = os.path.join(kitti_root, r'2012\training\colored_0')
-kitti_path['2015' + 'testing'] = os.path.join(kitti_root, r'2015\training\image_2')
+#kitti_path['2012' + 'testing'] = os.path.join(kitti_root, r'2012\training\colored_0')
+#kitti_path['2015' + 'testing'] = os.path.join(kitti_root, r'2015\training\image_2')
 
 def read_dataset(path = None, editions = 'mixed', parts = 'mixed', crop = None, resize = None, samples = None):
 	if path is None:
