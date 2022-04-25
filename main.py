@@ -288,15 +288,25 @@ elif dataset_cfg.dataset.value == 'things3d':
 	print(len(things3d_dataset['flow'][:samples:args.shard]))
 	print(things3d_dataset['flow'][0])
 	from pympler.asizeof import asizeof
-	trainImg1 = [cv2.imread(file).astype('uint8') for file in things3d_dataset['image_0'][:samples:args.shard]]
+    trainFlow = [things3d.load(file).astype('float16') for file in things3d_dataset['flow'][:samples:args.shard]]
+    to_remove = []
+    for i,trfl in enumerate(trainFlow):
+        if not np.all(np.isfinite(trfl)):
+            to_remove.append(i)
+    print("Flow not finite in {:d} out of total {:d} samples.".format(
+        len(to_remove), len(trainFlow)))
+    to_remove = set(to_remove)
+    trainFlow = [trfl for i,trfl in enumerate(trainFlow) if i not in to_remove]
+    print(asizeof(trainFlow[0]))
+    print(asizeof(trainFlow))
+    filtered_image_0 = [fn for i,fn in enumerate(things3d_dataset['image_0'][:samples:args.shard]) if i not in to_remove]
+    filtered_image_1 = [fn for i,fn in enumerate(things3d_dataset['image_1'][:samples:args.shard]) if i not in to_remove]
+	trainImg1 = [cv2.imread(file).astype('uint8') for file in filtered_image_0]
 	print(asizeof(trainImg1[0]))
 	print(asizeof(trainImg1))
-	trainImg2 = [cv2.imread(file).astype('uint8') for file in things3d_dataset['image_1'][:samples:args.shard]]
+	trainImg2 = [cv2.imread(file).astype('uint8') for file in filtered_image_1]
 	print(asizeof(trainImg2[0]))
 	print(asizeof(trainImg2))
-	trainFlow = [things3d.load(file).astype('float16') for file in things3d_dataset['flow'][:samples:args.shard]]
-	print(asizeof(trainFlow[0]))
-	print(asizeof(trainFlow))
 	trainSize = len(trainFlow)
 	training_datasets = [(trainImg1, trainImg2, trainFlow)] * batch_size
 	print(asizeof(training_datasets))
